@@ -36,7 +36,7 @@ class ProtocolCancel extends CMBaseObject implements IGatewayRequest
     {
         $this->gatewayUrl = 'https://b2b.cmbchina.com/%s';
         if ($this->isSandbox) {
-            $this->gatewayUrl = 'http://121.15.180.72/%s';
+            $this->gatewayUrl = 'http://mobiletest.cmburl.cn/%s';
         }
 
         try {

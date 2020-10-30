@@ -33,7 +33,7 @@ use Payment\Supports\BaseObject;
  * @email   : dayugog@gmail.com
  * @date    : 2019/3/28 10:25 PM
  * @version : 1.0.0
- * @desc    : http://121.15.180.72/OpenAPI2/DOC/DOCdefault.aspx
+ * @desc    : http://mobiletest.cmburl.cn/OpenAPI2/DOC/DOCdefault.aspx
  **/
 class CMBankProxy extends BaseObject implements IPayProxy, IQueryProxy
 {
@@ -209,7 +209,7 @@ class CMBankProxy extends BaseObject implements IPayProxy, IQueryProxy
     {
         try {
             $i = new PublicKeyQuery();
-            $i->request([]);
+            return $i->request([]);
         } catch (GatewayException $e) {
             throw $e;
         }

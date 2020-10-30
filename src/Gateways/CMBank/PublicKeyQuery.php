@@ -13,6 +13,8 @@ namespace Payment\Gateways\CMBank;
 
 use Payment\Contracts\IGatewayRequest;
 use Payment\Exceptions\GatewayException;
+use Payment\Helpers\StrUtil;
+use Payment\Payment;
 
 /**
  * @package Payment\Gateways\CMBank
@@ -27,6 +29,26 @@ class PublicKeyQuery extends CMBaseObject implements IGatewayRequest
     const METHOD = 'CmbBank_B2B/UI/NetPay/DoBusiness.ashx';
 
     /**
+     * CMBaseObject constructor.
+     * @throws GatewayException
+     */
+    public function __construct()
+    {
+        $this->isSandbox = self::$config->get('use_sandbox', false);
+        $this->signType  = self::$config->get('sign_type', 'SHA-256');
+        $this->merKey    = self::$config->get('mer_key', '');
+
+        $rsaPublicKey = self::$config->get('cmb_pub_key', '');
+        if ($rsaPublicKey) {
+            $this->publicKey = StrUtil::getRsaKeyValue($rsaPublicKey, 'public');
+        }
+//        if (empty($this->publicKey)) {
+//            throw new GatewayException('please set cmb public key', Payment::PARAMS_ERR);
+//        }
+    }
+
+
+    /**
      * 获取第三方返回结果
      * @param array $requestParams
      * @return mixed
@@ -36,7 +58,7 @@ class PublicKeyQuery extends CMBaseObject implements IGatewayRequest
     {
         $this->gatewayUrl = 'https://b2b.cmbchina.com/%s';
         if ($this->isSandbox) {
-            $this->gatewayUrl = 'http://121.15.180.72/%s';
+            $this->gatewayUrl = 'http://mobiletest.cmburl.cn/%s';
         }
 
         try {
